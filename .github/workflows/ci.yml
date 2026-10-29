@@ -20,6 +20,8 @@ jobs:
         run: julia --startup-file=no time_resolution.jl
       - name: Install CairoMakie
         run: julia --startup-file=no --project=. -e "using Pkg; Pkg.instantiate()"
+      - name: Stale camera repro
+        run: julia --startup-file=no --project=. stale_camera.jl
       - name: Rotated label repro
         run: julia --startup-file=no --project=. label_repro.jl
       - uses: actions/upload-artifact@v7
