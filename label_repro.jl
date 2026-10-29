@@ -23,7 +23,7 @@ end
 mkpath("out")
 println("Makie $(pkgversion(Makie)), CairoMakie $(pkgversion(CairoMakie)), Julia $VERSION on $(Sys.KERNEL)")
 render()  # compile first
-report("time_trigger", 100)
+report("time_trigger", 1000)
 
 # Same renders with `camera_trigger` taken from a counter instead of `time()`
 src = read(joinpath(pkgdir(Makie), "src", "camera", "camera.jl"), String)
@@ -33,4 +33,4 @@ old = "map!((a, b, c) -> time(), graph, [:view, :projection, :viewport], :camera
 occursin(old, fsrc) || error("camera_trigger line not found in this Makie version")
 Makie.eval(:(const CAMERA_TRIGGER_COUNTER = Threads.Atomic{UInt64}(0)))
 Makie.eval(Meta.parse(replace(fsrc, old => "map!((a, b, c) -> Threads.atomic_add!(CAMERA_TRIGGER_COUNTER, UInt64(1)), graph, [:view, :projection, :viewport], :camera_trigger)")))
-report("counter_trigger", 100)
+report("counter_trigger", 1000)
